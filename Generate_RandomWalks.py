@@ -133,16 +133,35 @@ def _generate_walks(d_graph, walk_length=30, num_walks=200, workers=4) -> list:
     walks = flatten(walk_results)
 
     return walks
+def CountFrequency(my_list, freq):
+    # Creating an empty dictionary
+    for item in my_list:
+        if (item in freq):
+            freq[item] += 1
+        else:
+            freq[item] = 1
+    return freq
+
+def Hsoftmax(freq):
+    pass
+
 
 # Create a graph
 graph = nx.karate_club_graph()
 #graph = nx.fast_gnp_random_graph(n=100, p=0.5)
 nx.draw_networkx(graph, with_labels=True)
-plt.show()
 rcm = list(cuthill_mckee_ordering(graph))
 A = nx.adjacency_matrix(graph, nodelist=rcm)
-print(A.toarray())
 d_graph = _precompute_probabilities(graph)
-print(d_graph)
-walks = _generate_walks(d_graph, walk_length=30, num_walks=200, workers=4)
-print(walks)
+walk_results = _generate_walks(d_graph, walk_length=30, num_walks=200, workers=4)
+freq = {}
+for idx, item in enumerate(walk_results):
+    freq = CountFrequency(item, freq)
+
+for key, value in freq.items():
+    print("% d : % d" % (int(key), value))
+data = list(freq.values())
+# flatten = lambda l: [item for sublist in l for item in sublist]
+# walks = flatten(walk_results)
+plt.stem(range(graph.number_of_nodes()), np.array(data))
+plt.show()
