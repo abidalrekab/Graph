@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, Counter, OrderedDict
 import matplotlib.pyplot as plt
 from networkx.utils import cuthill_mckee_ordering
 import numpy as np
@@ -143,7 +143,36 @@ def CountFrequency(my_list, freq):
     return freq
 
 def Hsoftmax(freq):
-    pass
+    HuffmanTree = nx.graph()
+    for k in sorted(freq, key = freq.get, reverse= False):
+        pass
+
+def GraphDegree(G):
+    degree_sequence = np.asarray([d for n, d in G.degree()])  # degree sequence
+    node_sequence =   np.asarray([n for n, d in G.degree()])  # degree sequence
+    print("Degree sequence", degree_sequence)
+    print("node sequence", node_sequence)
+    fig, ax = plt.subplots()
+    plt.bar(node_sequence, degree_sequence, width=0.80, color='b')
+    plt.title("Degrees Histogram")
+    plt.ylabel("degrees")
+    plt.xlabel("nodes")
+    plt.show()
+
+def RandomWalkHist(freq):
+    od = OrderedDict(sorted(freq.items()))
+    list_key_value = [[k, v] for k, v in od.items()]
+
+    frequency_count = np.asarray([d for n, d in list_key_value])
+    node_sequence = np.asarray([n for n, d in list_key_value])
+    print("Degree sequence", frequency_count)
+    print("node sequence", node_sequence)
+    fig, ax = plt.subplots()
+    plt.bar(node_sequence, frequency_count, width=0.80, color='b')
+    plt.title("Frequency Histogram")
+    plt.ylabel("Frequnecy")
+    plt.xlabel("nodes")
+    plt.show()
 
 
 # Create a graph
@@ -160,8 +189,6 @@ for idx, item in enumerate(walk_results):
 
 for key, value in freq.items():
     print("% d : % d" % (int(key), value))
-data = list(freq.values())
-# flatten = lambda l: [item for sublist in l for item in sublist]
-# walks = flatten(walk_results)
-plt.stem(range(graph.number_of_nodes()), np.array(data))
-plt.show()
+
+RandomWalkHist(freq)
+GraphDegree(graph)
