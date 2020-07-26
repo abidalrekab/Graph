@@ -177,20 +177,33 @@ def RandomWalkHist(freq):
 
 # Create a graph
 #graph = nx.karate_club_graph()
-graph = nx.fast_gnp_random_graph(n=10, p=0.5)
+n =10
+p = 0.5
+graph = nx.fast_gnp_random_graph(n, p)
 nx.draw_networkx(graph, with_labels=True)
 rcm = list(cuthill_mckee_ordering(graph))
 A = nx.adjacency_matrix(graph, nodelist=rcm)
 d_graph = _precompute_probabilities(graph)
 walk_results = _generate_walks(d_graph, walk_length=5, num_walks=200, workers=4)
-freq = {}
-for idx, item in enumerate(walk_results):
-    freq = CountFrequency(item, freq)
+#freq = {}
+#for idx, item in enumerate(walk_results):
+#    freq = CountFrequency(item, freq)
 
-for key, value in freq.items():
-    print("% d : % d" % (int(key), value))
+#for key, value in freq.items():
+#    print("% d : % d" % (int(key), value))
 
-RandomWalkHist(freq)
-GraphDegree(graph)
+#RandomWalkHist(freq)
+#GraphDegree(graph)
 print(d_graph)
-print(0.16071429+ 0.16071429 + 0.17241379 + 0.15789474 + 0.16949153 + 0.16071429 )
+for node in range(n):
+    print("----------- {} -------------".format(node))
+    retrun_prob = []
+    n_neighbors = d_graph[node]['neighbors']
+    prob = d_graph[node]['probabilities']
+    print('nodes', n_neighbors)
+    print('probabilities', prob)
+    for index, neighbor in enumerate(n_neighbors):
+        print(neighbor)
+        retrun_prob.append(prob[neighbor][index])
+    print('return probability of {} is {} '.format(node, retrun_prob))
+    print(sum(retrun_prob))
