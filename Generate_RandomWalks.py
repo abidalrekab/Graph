@@ -176,13 +176,13 @@ def RandomWalkHist(freq):
 
 
 # Create a graph
-graph = nx.karate_club_graph()
-#graph = nx.fast_gnp_random_graph(n=100, p=0.5)
+#graph = nx.karate_club_graph()
+graph = nx.fast_gnp_random_graph(n=10, p=0.5)
 nx.draw_networkx(graph, with_labels=True)
 rcm = list(cuthill_mckee_ordering(graph))
 A = nx.adjacency_matrix(graph, nodelist=rcm)
 d_graph = _precompute_probabilities(graph)
-walk_results = _generate_walks(d_graph, walk_length=30, num_walks=200, workers=4)
+walk_results = _generate_walks(d_graph, walk_length=5, num_walks=200, workers=4)
 freq = {}
 for idx, item in enumerate(walk_results):
     freq = CountFrequency(item, freq)
@@ -192,3 +192,5 @@ for key, value in freq.items():
 
 RandomWalkHist(freq)
 GraphDegree(graph)
+print(d_graph)
+print(0.16071429+ 0.16071429 + 0.17241379 + 0.15789474 + 0.16949153 + 0.16071429 )
